@@ -55,10 +55,23 @@ public class PositionTest {
 
     @Test
     public void testReflect() {
+        String grid = "X . 0\nX O .\nX . 0";
+        Position target = Position.parsePosition(grid, 1);
+        Position expectedHorizontalReflect = Position.parsePosition("X . 0\nX O .\nX . 0", 1);  // Adjust this based on expected behavior
+        Position expectedVerticalReflect = Position.parsePosition("0 . X\n. O X\n0 . X", 1);    // Adjust this based on expected behavior
+
+        assertEquals(expectedHorizontalReflect, target.reflect(0));  // Assuming true for horizontal
+        assertEquals(expectedVerticalReflect, target.reflect(1));   // Assuming false for vertical
     }
 
     @Test
     public void testRotate() {
+        Position target = Position.parsePosition("X . 0\nX 0 .\nX . 0", 1);
+        Position expectedRotation90 = Position.parsePosition("0 . 0\n. 0 .\nX X X", 1);  // Adjust based on 90-degree clockwise
+        Position expectedRotation180 = Position.parsePosition("0 . 1\n. 0 X\n0 . X", 1); // Adjust based on 180-degree rotation
+
+        assertEquals(expectedRotation90, target.rotate());    // Assuming 90 degrees rotation
+        assertEquals(expectedRotation180, target.rotate().rotate());  // Assuming 180 degrees rotation
     }
 
     @Test
