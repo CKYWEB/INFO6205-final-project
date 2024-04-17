@@ -24,14 +24,14 @@ public class Othello {
 			playerInput = keyboard.nextLine().toLowerCase();
 
 			// player 1 will be human
-			if (playerInput.equals("human")) {
+			if (playerInput.equalsIgnoreCase("human") || playerInput.equalsIgnoreCase("h")) {
 
 				System.out.println("");
 				return new HumanPlayer(piece);
 			}
 
 			// player 1 will be a monte carlo player
-			else if (playerInput.equals("monte carlo")) {
+			else if (playerInput.equalsIgnoreCase("monte carlo") || playerInput.equalsIgnoreCase("m")) {
 
 				while (true) {
 
@@ -58,15 +58,15 @@ public class Othello {
 
 				while (true) {
 
-					System.out.println("\nDebug mode (y/n)?");
+					System.out.println("\nShow what the computer is thinking? (y/n)?");
 					playerInput = keyboard.nextLine();
 
-					if (playerInput.toLowerCase().equals("y")) {
+					if (playerInput.equalsIgnoreCase("y")) {
 
 						debug = true;
 					}
 
-					else if (playerInput.toLowerCase().equals("n")) {
+					else if (playerInput.equalsIgnoreCase("n")) {
 
 						debug = false;
 					}

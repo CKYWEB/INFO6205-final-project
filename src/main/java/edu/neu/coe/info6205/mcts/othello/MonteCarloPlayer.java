@@ -64,7 +64,7 @@ public class MonteCarloPlayer extends Player {
 
 		if (!debug) {
 			System.out.print(
-					"Player " + (piece == 'X' ? "1" : "2") + " please make a move with the " + piece + " piece: ");
+					"Player " + (piece == 'X' ? "1" : "2") + " (computer) is thinking a move with the " + piece + " piece... ");
 		}
 
 		// player object created for simulation purposes
