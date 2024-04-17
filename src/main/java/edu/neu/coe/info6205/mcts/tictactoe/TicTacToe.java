@@ -2,6 +2,7 @@ package edu.neu.coe.info6205.mcts.tictactoe;
 
 import edu.neu.coe.info6205.mcts.core.Game;
 import edu.neu.coe.info6205.mcts.core.Move;
+import edu.neu.coe.info6205.mcts.core.Node;
 import edu.neu.coe.info6205.mcts.core.State;
 
 import java.util.*;
@@ -18,7 +19,11 @@ public class TicTacToe implements Game<TicTacToe> {
     public static void main(String[] args) {
         // NOTE the behavior of the game to be run will be based on the TicTacToe instance field: random.
         State<TicTacToe> state = new TicTacToe().runGame();
-        if (state.winner().isPresent()) System.out.println("TicTacToe: winner is: " + state.winner().get());
+        if (state.winner().isPresent()) {
+            int winner = state.winner().get();
+            if(winner == 1) System.out.println("TicTacToe: winner is: X");
+            else System.out.println("TicTacToe: winner is: 0");
+        }
         else System.out.println("TicTacToe: draw");
     }
 
@@ -42,11 +47,24 @@ public class TicTacToe implements Game<TicTacToe> {
      */
     State<TicTacToe> runGame() {
         State<TicTacToe> state = start();
-        int player = opener();
+        MCTS mcts = new MCTS(new TicTacToeNode(state)); // Initialize MCTS with the starting state
+//        int player = opener();
         while (!state.isTerminal()) {
-            state = state.next(state.chooseMove(player));
-            player = 1 - player;
+            System.out.println(state.toString());
+            mcts.run(1000);
+//            state = state.next(state.chooseMove(player));
+//            player = 1 - player;
+            // Assuming bestChild correctly chooses the best move
+            Node<TicTacToe> bestMove = mcts.bestChild(MCTS.rootNode);
+            if (bestMove == null) {
+                throw new IllegalStateException("MCTS did not return a move");
+            }
+            state = bestMove.state();  // Update the game state to the best move's state
+
+            // Reset the root of the MCTS to the new state for the next player's move
+            MCTS.rootNode = new TicTacToeNode(state);
         }
+        System.out.println(state.toString());
         return state;
     }
 
@@ -223,9 +241,9 @@ public class TicTacToe implements Game<TicTacToe> {
 
         @Override
         public String toString() {
-            return "TicTacToe{\n" +
-                    position +
-                    "\n}";
+            return "TicTacToe\n" +
+                    position.render() +
+                    "\n";
         }
 
         public TicTacToeState(Position position) {
